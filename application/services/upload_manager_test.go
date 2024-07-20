@@ -35,9 +35,9 @@ func TestVideoServiceUpload(t *testing.T) {
 	videoUpload.OutputBucket = "encoder-fc"
 	videoUpload.VideoPath = os.Getenv("LOCAL_STORAGE_PATH") + "/" + video.ID
 
-	doneUpload := make(chan string)
-	go videoUpload.ProcessUpload(50, doneUpload)
-	result := <-doneUpload
+	uploadStatus := make(chan string)
+	go videoUpload.ProcessUpload(50, uploadStatus)
+	result := <-uploadStatus
 	require.Equal(t, result, "upload completed")
 	err = videoService.Finish()
 	require.Nil(t, err)

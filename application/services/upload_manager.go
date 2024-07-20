@@ -47,7 +47,7 @@ func (vu *VideoUpload) UploadObject(objectPath string, client *storage.Client, c
 	return nil
 }
 
-func (vu *VideoUpload) ProcessUpload(concurrency int, doneUpload chan string) error {
+func (vu *VideoUpload) ProcessUpload(concurrency int, uploadStatus chan string) error {
 	in := make(chan int, runtime.NumCPU())
 	returnChannel := make(chan string)
 
@@ -74,7 +74,7 @@ func (vu *VideoUpload) ProcessUpload(concurrency int, doneUpload chan string) er
 
 	for r := range returnChannel {
 		if r != "" {
-			doneUpload <- r
+			uploadStatus <- r
 			break
 		}
 	}
